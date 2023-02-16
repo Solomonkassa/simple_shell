@@ -3,17 +3,20 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/wait.h>
+#include <errno.h>
 
 extern char **environ;
-char *_strtok(char *str, const char *delim);
-char *_getline();
-int _strncmp(const char *str1, const char *str2, size_t n);
-char* _getenv(const char* name);
-int _strcmp(const char* str1, const char* str2);
+
+char* _getline(void);
+char* _strtok(char *str, const char *delim);
+int _strcmp(const char *str1, const char *str2);
+int _strlen(const char *str);
+char *_getenv(const char *name);
+int _setenv(const char *_varname, const char *_varvalue, int overwrite);
+int _unsetenv(char *_varname);
+int _putenv(char *s);
 
 #endif
