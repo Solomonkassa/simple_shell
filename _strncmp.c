@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell.h"
 
 int _strncmp(const char *str1, const char *str2, size_t n) 
 {
@@ -10,6 +10,8 @@ int _strncmp(const char *str1, const char *str2, size_t n)
         str2++;
         n--;
     }
-    if (n == 0) return 0;
-    else return (*str1 - *str2);
+    if (n == 0) 
+        return (0);
+    else 
+        return (*str1 - *str2);
 }
