@@ -1,10 +1,9 @@
-#include "main.h"
+#include "shell.h"
 
-
-char *_strtok(char *str, const char *delim)
+char* _strtok(char* str, const char* delim)
 {
-    static char *last;
-    char *nextp;
+    static char* last;
+    char* token;
 
     if (str != NULL)
     {
@@ -16,20 +15,23 @@ char *_strtok(char *str, const char *delim)
         return NULL;
     }
 
-    char *p = strpbrk(last, delim);
+    token = last;
 
-    if (p == NULL)
+    while (*last != '\0')
     {
-        nextp = strchr(last, '\0');
+        const char* d = delim;
+        for (const char *d = delim; *d != '\0'; d++)
+        {
+            if (*last == *d)
+            {
+                *last = '\0';
+                last++;
+                return (token);
+            }
+        }
+        
+        last++;
     }
-    else
-    {
-        *p = '\0';
-        nextp = p + 1;
-    }
-
-    char *token = last;
-    last = nextp;
-
-    return token;
+    
+    return (token);
 }
