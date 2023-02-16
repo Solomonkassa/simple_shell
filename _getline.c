@@ -1,34 +1,25 @@
-#include "main.h"
+#include "shell.h"
 
-char *_getline()
+char* _getline(void)
 {
     char c;
+    char *buffer;
+  
     int i = 0;
     int size = 80;
-
-    char *buffer = malloc(size * sizeof(char));
+  
+    buffer = malloc(size * sizeof(char));
     if (buffer == NULL)
     {
-        return NULL;
+        return (NULL);
     }
 
-    while ((c = getchar()) != '\n' && c != EOF)
+    while (read(STDIN_FILENO, &c, 1) > 0 && c != '\n')
     {
         buffer[i++] = c;
-
-        if (i == size)
-        {
-            size *= 2;
-            char *temp = realloc(buffer, size * sizeof(char));
-
-            if (temp == NULL)
-            {
-                free(buffer);
-                return NULL;
-            }
-            buffer = temp;
-        }
     }
+
     buffer[i] = '\0';
-    return buffer;
+    
+    return (buffer);
 }
