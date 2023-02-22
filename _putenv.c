@@ -1,20 +1,24 @@
 #include "shell.h"
 
 /**
- * _strcmp - compares two strings
- * @str1: first string to compare
- * @str2: second string to compare
- *
- * Return: an integer less than, equal to, or greater than zero if str1 is
- * found, respectively, to be less than, to match, or be greater than str2.
+ * _putenv - adds or modifies an environment variable
+ * @s: the string containing the variable name and value
+ * Return: 0 on success, -1 on failure
  */
-int _strcmp(const char *str1, const char *str2)
+
+int _putenv(char *s)
 {
-	while (*str1 && *str2 && (*str1 == *str2))
+	int i = 0;
+	char **env = environ;
+
+	while (*env)
 	{
-		str1++;
-		str2++;
+		i++;
+		env++;
 	}
 
-	return (*str1 - *str2);
+	environ[i] = s;
+	environ[i + 1] = NULL;
+
+	return (0);
 }
