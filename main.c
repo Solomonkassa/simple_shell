@@ -1,210 +1,44 @@
 #include "shell.h"
 
 /**
- * if_and - Runs a command with '&&' separator
- * @str: Command to run
- */
-void if_and(char *str)
-{
-  
-  char *args[1024];
-  int i = 0;
-  
-  char *command = strtok(str, "&&");
-
-    while (command != NULL)
-    {
-      args[i++] = command;
-      command = strtok(NULL, "&&");
-    }
-    args[i] = NULL;
-      
-    int num_commands = i;
-    int m = 0;
-
-  for (i = 0; i < num_commands; i++)
-    {
-      if (args[i] != NULL)
-      {
-        m = execute_command(args[i]);
-        if (m != 0)
-        {
-          break;
-        }
-      }
-    }
-      
-}
-
-/**
- * if_cmdseparator - Runs a command with ';' separator
- * @str: Command to run
- */
-void if_cmdseparator(char *str)
-{
-  
-  char *args[1024];
-  int i = 0;
-  
-  char *command = strtok(str, ";");
-
-    while (command != NULL)
-    {
-      args[i++] = command;
-      command = strtok(NULL, ";");
-    }
-    args[i] = NULL;
-      
-    int num_commands = i;
-    
-
-  for (i = 0; i < num_commands; i++)
-    {
-      if (args[i] != NULL)
-      {
-         execute_command(args[i]);
-      }
-    }
-      
-}
-
-/**
- * if_or - Runs a command with '||' separator
- * @str: Command to run
- */
-void if_or(char *str)
-{
-  
-  char *args[1024];
-  int i = 0;
-  
-  char *command = strtok(str, "||");
-
-    while (command != NULL)
-    {
-      args[i++] = command;
-      command = strtok(NULL, "||");
-    }
-    args[i] = NULL;
-      
-    int num_commands = i;
-    int m = 0;
-
-  for (i = 0; i < num_commands; i++)
-    {
-      if (args[i] != NULL)
-      {
-        m = execute_command(args[i]);
-        if (m == 0)
-        {
-          break;
-        }
-      }
-    }
-      
-}
-
-/**
- * execute_command - Executes a single command
- * @command: Command to execute
+ * main - entry point
+ * @ac: arg count
+ * @av: arg vector
  *
  * Return: 0 on success, 1 on error
  */
-int execute_command(char *command)
+int main(int ac, char **av)
 {
-  char *args[1024];
-  char *token = strtok(command, " \n");
-  int i = 0, j = 0;
+	info_t info[] = { INFO_INIT };
+	int fd = 2;
 
-  while (token != NULL)
-  {
-    args[i++] = token;
-    token = strtok(NULL, " \n");
-  }
+	asm ("mov %1, %0\n\t"
+		"add $3, %0"
+		: "=r" (fd)
+		: "r" (fd));
 
-  args[i] = NULL;
-
-  if (args[1] != NULL)
-  {
-    char *p = _strchr(args[1], '/');
-    if (p != NULL)
-    {
-      int m = access(args[1], F_OK);
-      if (m == -1)
-      {
-        perror(" ");
-        return(1);
-      }
-    }
-  }
-  
-
-  pid_t pid = fork();
-
-  if (pid < 0)
-  {
-    perror("");
-  }
-  else if (pid == 0)
-  {
-    char *env = getenv("PATH");
-    char *path = strtok(env, ":");
-
-    while (path != NULL)
-    {
-      char buffer[100];
-      snprintf(buffer, sizeof(buffer), "%s/%s", path, args[0]);
-      execve(buffer, args, environ);
-      path = strtok(NULL, ":");
-    }
-    exit (1);
-  }
-  else
-    wait(NULL);
-  return (0);
-}
-
-int main(int argc, char *argv[])
-{
-  char *cmd = NULL;
-  size_t size = 0;
-  char *args[1024];
-  int i = 0;
-
-  while (1)
-  {
-
-    write(STDOUT_FILENO, "#cisfun$ ", 9);
-    if (getline(&cmd, &size, stdin) == -1)
-    {
-      break;
-    }
-
-    char *m = strstr(cmd, "&&");
-    if (m != NULL)
-    {
-      if_and(cmd);
-    }
-
-    char *s = strstr(cmd, "||");
-    if (s != NULL)
-    {
-      if_or(cmd);
-    }
-
-    char *q = strstr(cmd, ";");
-    if (q != NULL)
-    {
-      if_cmdseparator(cmd);
-    }
-
-    if (m == NULL && s == NULL)
-    {
-      execute_command(cmd);
-    }
-
-    }
-  free(cmd);
-  return 0;
-
+	if (ac == 2)
+	{
+		fd = open(av[1], O_RDONLY);
+		if (fd == -1)
+		{
+			if (errno == EACCES)
+				exit(126);
+			if (errno == ENOENT)
+			{
+				_eputs(av[0]);
+				_eputs(": 0: Can't open ");
+				_eputs(av[1]);
+				_eputchar('\n');
+				_eputchar(BUF_FLUSH);
+				exit(127);
+			}
+			return (EXIT_FAILURE);
+		}
+		info->readfd = fd;
+	}
+	populate_env_list(info);
+	read_history(info);
+	hsh(info, av);
+	return (EXIT_SUCCESS);
 }
