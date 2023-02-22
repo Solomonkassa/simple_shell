@@ -12,6 +12,9 @@ typedef struct {
 Alias aliases[MAX_ALIAS];
 int num_aliases = 0;
 
+/**
+ * print_aliases - Prints all aliases
+ */
 void print_aliases() 
 {
     for (int i = 0; i < num_aliases; i++) 
@@ -19,6 +22,11 @@ void print_aliases()
         printf("%s='%s'\n", aliases[i].name, aliases[i].value);
     }
 }
+
+/**
+ * print_alias - Prints an alias with the given name
+ * @name: The name of the alias to print
+ */
 void print_alias(char* name) 
 {
     for (int i = 0; i < num_aliases; i++) 
@@ -31,6 +39,12 @@ void print_alias(char* name)
     }
     fprintf(stderr, "alias: %s: not found\n", name);
 }
+
+/**
+ * set_alias - Sets an alias with the given name and value
+ * @name: The name of the alias to set
+ * @value: The value of the alias to set
+ */
 void set_alias(char* name, char* value) 
 {
     for (int i = 0; i < num_aliases; i++) 
@@ -51,6 +65,14 @@ void set_alias(char* name, char* value)
     aliases[num_aliases].value = strdup(value);
     num_aliases++;
 }
+
+/**
+ * main - The entry point of the shell program
+ * @argc: The number of command-line arguments
+ * @argv: An array of command-line argument strings
+ *
+ * Return: 0 on success
+ */
 int main(int argc, char *argv[])
 {
   char *cmd = NULL;
