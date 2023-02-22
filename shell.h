@@ -23,6 +23,7 @@ int _setenv(const char *varname, const char *varvalue, int overwrite);
 int _strlen(const char *str);
 int _unsetenv(char *varname);
 int _putenv(char *s);
+int _strncmp(const char *str1, const char *str2, size_t n)
 
 
 #endif
