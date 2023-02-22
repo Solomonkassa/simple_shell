@@ -7,6 +7,8 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #define MAX_LINE 80
 #define MAX_ARGS 20
@@ -22,9 +24,13 @@ char *_getenv(const char *name);
 int _setenv(const char *_varname, const char *_varvalue, int overwrite);
 int _unsetenv(char *_varname);
 int _putenv(char *s);
+int _strncmp(const char *str1, const char *str2, size_t n);
 
 void read_command(char *line, char **args);
 void execute_command(char **args);
+void if_cmdseparator(char *str);
+void if_or(char *str);
+
 
 
 #endif
