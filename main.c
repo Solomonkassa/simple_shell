@@ -1,5 +1,9 @@
 #include "shell.h"
 
+/**
+ * if_and - Runs a command with '&&' separator
+ * @str: Command to run
+ */
 void if_and(char *str)
 {
   
@@ -31,6 +35,11 @@ void if_and(char *str)
     }
       
 }
+
+/**
+ * if_cmdseparator - Runs a command with ';' separator
+ * @str: Command to run
+ */
 void if_cmdseparator(char *str)
 {
   
@@ -58,6 +67,11 @@ void if_cmdseparator(char *str)
     }
       
 }
+
+/**
+ * if_or - Runs a command with '||' separator
+ * @str: Command to run
+ */
 void if_or(char *str)
 {
   
@@ -89,6 +103,13 @@ void if_or(char *str)
     }
       
 }
+
+/**
+ * execute_command - Executes a single command
+ * @command: Command to execute
+ *
+ * Return: 0 on success, 1 on error
+ */
 int execute_command(char *command)
 {
   char *args[1024];
