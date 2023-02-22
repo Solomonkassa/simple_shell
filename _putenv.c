@@ -1,43 +1,20 @@
 #include "shell.h"
 
 /**
- * _setenv - Set the value of an environment variable
- * @varname: The name of the variable to set
- * @varvalue: The value to set the variable to
- * @overwrite: Whether to overwrite the variable if it already exists
+ * _strcmp - compares two strings
+ * @str1: first string to compare
+ * @str2: second string to compare
  *
- * Return: 0 on success, -1 on failure
+ * Return: an integer less than, equal to, or greater than zero if str1 is
+ * found, respectively, to be less than, to match, or be greater than str2.
  */
-int _setenv(const char *varname, const char *varvalue, int overwrite)
+int _strcmp(const char *str1, const char *str2)
 {
-	char *existing_value;
-	char *p;
-	size_t size;
-	int n;
-
-	if (varname == NULL || varname[0] == '\0' || strchr(varname, '=') != NULL)
-		return (-1);
-
-	existing_value = _getenv(varname);
-
-	if (existing_value != NULL && !overwrite)
-		return (-1);
-
-	size = _strlen(varname) + _strlen(varvalue) + 2;
-	p = malloc(sizeof(char) * size);
-
-	if (p == NULL)
-		return (-1);
-
-	snprintf(p, size, "%s=%s", varname, varvalue);
-
-	n = _putenv(p);
-
-	if (n != 0)
+	while (*str1 && *str2 && (*str1 == *str2))
 	{
-		free(p);
-		return (-1);
+		str1++;
+		str2++;
 	}
 
-	return (0);
+	return (*str1 - *str2);
 }
