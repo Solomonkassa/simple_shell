@@ -26,7 +26,10 @@ int main(int argc, char *argv[])
             perror("write");
             exit(EXIT_FAILURE);
         }
-        cmd = _getline();                                                if (feof(stdin))
+        
+        cmd = _getline();
+            
+        if (feof(stdin))
         {
           break;
         }
@@ -125,8 +128,8 @@ int main(int argc, char *argv[])
 
                 if (pid == 0)
                 {
-                    char *_env = _getenv("PATH");
-                    char *path = _strtok(_env, ":");
+                    char *env = _getenv("PATH");
+                    char *path = _strtok(env, ":");
 
                     while (path != NULL)
                     {
