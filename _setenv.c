@@ -14,6 +14,7 @@ int _setenv(const char *varname, const char *varvalue, int overwrite)
 	char *p;
 	size_t size;
 	int n;
+
 	if (varname == NULL || varname[0] == '\0' || strchr(varname, '=') != NULL)
 		return (-1);
 
@@ -30,7 +31,7 @@ int _setenv(const char *varname, const char *varvalue, int overwrite)
 
 	snprintf(p, size, "%s=%s", varname, varvalue);
 
-        n = _putenv(p);
+	n = _putenv(p);
 
 	if (n != 0)
 	{
@@ -40,4 +41,3 @@ int _setenv(const char *varname, const char *varvalue, int overwrite)
 
 	return (0);
 }
-
