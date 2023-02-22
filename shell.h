@@ -11,8 +11,6 @@
 #include <limits.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 
 /* for read/write buffers */
 #define READ_BUF_SIZE 1024
@@ -38,7 +36,6 @@
 
 extern char **environ;
 
-<<<<<<< HEAD
 
 /**
  * struct liststr - singly linked list
@@ -227,23 +224,6 @@ char **list_to_strings(list_t *);
 size_t print_list(const list_t *);
 list_t *node_starts_with(list_t *, char *, char);
 ssize_t get_node_index(list_t *, list_t *);
-=======
-char* _getline(void);
-char* _strtok(char *str, const char *delim);
-int _strcmp(const char *str1, const char *str2);
-int _strlen(const char *str);
-char *_getenv(const char *name);
-int _setenv(const char *_varname, const char *_varvalue, int overwrite);
-int _unsetenv(char *_varname);
-int _putenv(char *s);
-int _strncmp(const char *str1, const char *str2, size_t n);
-
-void read_command(char *line, char **args);
-void execute_command(char **args);
-void if_cmdseparator(char *str);
-void if_or(char *str);
-
->>>>>>> 4aa7c6c73fe8c427393d7e043bb55226a7cad025
 
 /* toem_vars.c */
 int is_chain(info_t *, char *, size_t *);
