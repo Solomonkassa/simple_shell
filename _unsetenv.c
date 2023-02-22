@@ -6,25 +6,31 @@
  *
  * Return: 0 on success, -1 on failure
  */
+
 int _unsetenv(char *varname)
 {
-        int i, j;
-        extern char **environ;
+	int i, j;
+	char **environ;
 
-        for (i = 0; environ[i] != NULL; i++)
-        {
-                j = 0;
-                for (; varname[j] != '\0' && varname[j] == environ[i][j]; j++)
-                        ;
+	for (i = 0; environ[i] != NULL; i++)
+	{
+		j = 0;
 
-                if (varname[j] == '\0')
-                {
-                        for (; environ[i] != NULL; i++)
-                                environ[i] = environ[i + 1];
+		for (; varname[j] != '\0' && varname[j] == environ[i][j];)
+		{
+			j++;
+		}
 
-                        return (0);
-                }
-        }
+		if (varname[j] == '\0')
+		{
+			for (; environ[i] != NULL; i++)
+			{
+				environ[i] = environ[i + 1];
+			}
 
-        return (-1);
+			return (0);
+		}
+	}
+
+	return (-1);
 }
