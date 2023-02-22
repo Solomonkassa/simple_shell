@@ -1,5 +1,12 @@
 #include "shell.h"
 
+/**
+ * main - Entry point for the shell
+ * @argc: Number of command line arguments
+ * @argv: Array of command line arguments
+ *
+ * Return: Always returns 0
+ */
 int main(int argc, char *argv[])
 {
     char *cmd = NULL;
@@ -7,16 +14,16 @@ int main(int argc, char *argv[])
     char *arr[80];
     char *m[80];
     char s[80];
-    char *n; 
+    char *n;
     char *token;
     char *tok;
     char *oldpwd = NULL;
-  
+
     while (1)
     {
         write(STDOUT_FILENO, "#cisfun$ ", 9);
         cmd = _getline();
-    
+
         token = _strtok(cmd, " \n");
         while (token != NULL)
         {
@@ -25,7 +32,7 @@ int main(int argc, char *argv[])
             token = _strtok(NULL, " \n");
         }
         arr[i] = NULL;
-    
+
         if (i > 0)
         {
             if (_strcmp(arr[0], "exit") == 0)
@@ -33,32 +40,32 @@ int main(int argc, char *argv[])
                 free(cmd);
                 exit(0);
             }
-            else if (_strcmp(arr[0], "cd") == 0) 
+            else if (_strcmp(arr[0], "cd") == 0)
             {
-                if (arr[1] == NULL) 
+                if (arr[1] == NULL)
                 {
                     chdir(_getenv("HOME"));
-                    if (oldpwd != NULL) 
+                    if (oldpwd != NULL)
                     {
                         free(oldpwd);
                         oldpwd = NULL;
                     }
                 }
-                else if (_strcmp(arr[1], "-") == 0) 
+                else if (_strcmp(arr[1], "-") == 0)
                 {
-                    if (oldpwd == NULL) 
+                    if (oldpwd == NULL)
                     {
                         perror(" ");
-                    } 
-                    else 
+                    }
+                    else
                     {
                         chdir(oldpwd);
                         oldpwd = getcwd(NULL, 0);
                     }
                 }
-                else 
+                else
                 {
-                    if (oldpwd != NULL) 
+                    if (oldpwd != NULL)
                     {
                         free(oldpwd);
                         oldpwd = NULL;
@@ -80,11 +87,11 @@ int main(int argc, char *argv[])
             }
             else if (_strcmp(arr[0], "setenv") == 0)
             {
-                if (i < 3) 
+                if (i < 3)
                 {
                     printf(" ");
-                } 
-                else 
+                }
+                else
                 {
                     _setenv(arr[1], arr[2], 1);
                 }
@@ -93,7 +100,7 @@ int main(int argc, char *argv[])
             {
                 if (i < 2)
                 {
-                    printf(" "); 
+                    printf(" ");
                 }
                 else
                 {
@@ -126,10 +133,10 @@ int main(int argc, char *argv[])
                 }
             }
         }
-   
+
         i = 0;
         free(cmd);
     }
-  
+
     return (0);
 }
