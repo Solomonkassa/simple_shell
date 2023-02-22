@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * main - Simple Shell (Hsh)
+ * main - Simple Shell (#cisfun$)
  * @argc: Argument Count
  * @argv:Argument Value
  * Return: 0
