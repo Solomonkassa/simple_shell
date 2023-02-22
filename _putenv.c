@@ -8,17 +8,17 @@
 
 int _putenv(char *s)
 {
-    int i = 0;
-    char **env = environ;
+	int i = 0;
+	char **env = environ;
 
-    while (*env)
-    {
-        i++;
-        env++;
-    }
+	while (*env)
+	{
+		i++;
+		env++;
+	}
 
-    environ[i] = s;
-    environ[i + 1] = NULL;
+	environ[i] = s;
+	environ[i + 1] = NULL;
 
-    return (0);
+	return (0);
 }
