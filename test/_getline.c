@@ -1,5 +1,10 @@
 #include "shell.h"
 
+/**
+* _getline - Read The Input By User From Stdin
+* Return: Input
+*/
+
 char* _getline(void)
 {
     char c;
