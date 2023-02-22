@@ -1,5 +1,12 @@
 #include "shell.h"
 
+/**
+ * main - Simple Shell (#cisfun$)
+ * @argc: Argument Count
+ * @argv:Argument Value
+ * Return: 0
+ */
+
 int main(int argc, char *argv[])
 {
     char *cmd = NULL;
