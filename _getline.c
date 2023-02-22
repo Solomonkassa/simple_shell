@@ -7,23 +7,23 @@
 
 char *_getline(void)
 {
-    char c;
-    char *buffer;
-    int i = 0;
-    int size = 80;
+	char c;
+	char *buffer;
+	int i = 0;
+	int size = 80;
 
-    buffer = malloc(size * sizeof(char));
-    if (buffer == NULL)
-    {
-        return (NULL);
-    }
+	buffer = malloc(size * sizeof(char));
+	if (buffer == NULL)
+	{
+		return (NULL);
+	}
 
-    while (read(STDIN_FILENO, &c, 1) > 0 && c != '\n')
-    {
-        buffer[i++] = c;
-    }
+	while (read(STDIN_FILENO, &c, 1) > 0 && c != '\n')
+	{
+		buffer[i++] = c;
+	}
 
-    buffer[i] = '\0';
+	buffer[i] = '\0';
 
-    return (buffer);
+	return (buffer);
 }
