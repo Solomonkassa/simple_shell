@@ -1,35 +1,39 @@
 #include "shell.h"
 
-int _setenv(const char *_varname, const char *_varvalue, int overwrite)
+/**
+ * _setenv - Set the value of an environment variable
+ * @varname: The name of the variable to set
+ * @varvalue: The value to set the variable to
+ * @overwrite: Whether to overwrite the variable if it already exists
+ *
+ * Return: 0 on success, -1 on failure
+ */
+int _setenv(const char *varname, const char *varvalue, int overwrite)
 {
-    if (_varname == NULL || _varname[0] == '\0' || strchr(_varname,'=') != NULL)
-    {
-        return (-1);
-    }
-  
-    char *existingvalue = _getenv(_varname);
+	if (varname == NULL || varname[0] == '\0' || strchr(varname, '=') != NULL)
+		return (-1);
 
-    if (existingvalue != NULL && !overwrite)
-    {
-        return (-1);
-    }
+	char *existing_value = _getenv(varname);
 
-    size_t size = _strlen(_varname) + _strlen(_varvalue) + 2;
+	if (existing_value != NULL && !overwrite)
+		return (-1);
 
-    char *p = malloc(sizeof(char) * size);
-    if (p == NULL)
-    {
-        return (-1);
-    }
+	size_t size = _strlen(varname) + _strlen(varvalue) + 2;
+	char *p = malloc(sizeof(char) * size);
 
-    snprintf(p, size, "%s=%s", _varname, _varvalue);
+	if (p == NULL)
+		return (-1);
 
-    int n = _putenv(p);
-    if (n != 0)
-    {
-        free(p);
-        return (-1);
-    }
+	snprintf(p, size, "%s=%s", varname, varvalue);
 
-    return (0);
+	int n = _putenv(p);
+
+	if (n != 0)
+	{
+		free(p);
+		return (-1);
+	}
+
+	return (0);
 }
+
