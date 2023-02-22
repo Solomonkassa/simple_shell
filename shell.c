@@ -21,9 +21,15 @@ int main(int argc, char *argv[])
 
     while (1)
     {
-        write(STDOUT_FILENO, "#cisfun$ ", 9);
-        cmd = _getline();
-
+        if (write(STDOUT_FILENO, "#cisfun$ ", 9) == -1)
+        {
+            perror("write");
+            exit(EXIT_FAILURE);
+        }
+        cmd = _getline();                                                if (feof(stdin))
+        {
+          break;
+        }
         token = _strtok(cmd, " \n");
         while (token != NULL)
         {
@@ -49,6 +55,11 @@ int main(int argc, char *argv[])
                     {
                         free(oldpwd);
                         oldpwd = NULL;
+                    }
+                    if (chdir(_getenv("HOME")) == -1)  
+                    {
+                         perror("chdir");
+                         exit(EXIT_FAILURE);
                     }
                 }
                 else if (_strcmp(arr[1], "-") == 0)
