@@ -1,18 +1,17 @@
 #include "shell.h"
 
 /**
-* _getline - Read The Input By User From Stdin
-* Return: Input
-*/
+ * _getline - reads the input from stdin provided by the user
+ * Return: the input string
+ */
 
-char* _getline(void)
+char *_getline(void)
 {
     char c;
     char *buffer;
-  
     int i = 0;
     int size = 80;
-  
+
     buffer = malloc(size * sizeof(char));
     if (buffer == NULL)
     {
@@ -25,6 +24,6 @@ char* _getline(void)
     }
 
     buffer[i] = '\0';
-    
+
     return (buffer);
 }
