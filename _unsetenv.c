@@ -10,7 +10,6 @@
 int _unsetenv(char *varname)
 {
 	int i, j;
-	char **environ;
 
 	for (i = 0; environ[i] != NULL; i++)
 	{
