@@ -1,27 +1,30 @@
 #include "shell.h"
 
-int _unsetenv(char *_varname)
+/**
+ * _unsetenv - removes an environment variable
+ * @varname: the name of the variable to remove
+ *
+ * Return: 0 on success, -1 on failure
+ */
+int _unsetenv(char *varname)
 {
-    int i, j;
-    extern char **environ;
+        int i, j;
+        extern char **environ;
 
-    for (i = 0; environ[i] != NULL; i++)
-    {
-        j = 0;
-        for (; _varname[j] != '\0' && _varname[j] == environ[i][j];)
+        for (i = 0; environ[i] != NULL; i++)
         {
-            j++;
-        }
-        if (_varname[j] == '\0')
-        {
-            for (; environ[i] != NULL; i++)
-            {
-                environ[i] = environ[i + 1];
-            }
-          
-            return (0);
-        }
-    }
+                j = 0;
+                for (; varname[j] != '\0' && varname[j] == environ[i][j]; j++)
+                        ;
 
-    return (-1);
+                if (varname[j] == '\0')
+                {
+                        for (; environ[i] != NULL; i++)
+                                environ[i] = environ[i + 1];
+
+                        return (0);
+                }
+        }
+
+        return (-1);
 }
