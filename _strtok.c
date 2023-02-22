@@ -7,35 +7,40 @@
  *
  * Return: a pointer to the next token in the string
  */
+
 char *_strtok(char *str, const char *delim)
 {
-        static char *last;
-        char *token;
+	static char *last;
+	char *token;
 
-        if (str != NULL)
-                last = str;
+	if (str != NULL)
+	{
+		last = str;
+	}
 
-        if (*last == '\0')
-                return NULL;
+	if (*last == '\0')
+	{
+		return (NULL);
+	}
 
-        token = last;
+	token = last;
 
-        while (*last != '\0')
-        {
-                const char *d = delim;
+	while (*last != '\0')
+	{
+		const char *d = delim;
 
-                for (d = delim; *d != '\0'; d++)
-                {
-                        if (*last == *d)
-                        {
-                                *last = '\0';
-                                last++;
-                                return (token);
-                        }
-                }
+		for (d = delim; *d != '\0'; d++)
+		{
+			if (*last == *d)
+			{
+				*last = '\0';
+				last++;
+				return (token);
+			}
+		}
 
-                last++;
-        }
+		last++;
+	}
 
-        return (token);
+	return (token);
 }
