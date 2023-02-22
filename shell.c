@@ -1,135 +1,90 @@
 #include "shell.h"
 
-int main(int argc, char *argv[])
+/**
+ * main - Simple Shell (Hsh)
+ * @argc: Argument Count
+ * @argv:Argument Value
+ * Return: Exit Value By Status
+ */
+
+int main(__attribute__((unused)) int argc, char **argv)
 {
-    char *cmd = NULL;
-    int i = 0, j = 0;
-    char *arr[80];
-    char *m[80];
-    char s[80];
-    char *n; 
-    char *token;
-    char *tok;
-    char *oldpwd = NULL;
-  
-    while (1)
-    {
-        write(STDOUT_FILENO, "#cisfun$ ", 9);
-        cmd = _getline();
-    
-        token = _strtok(cmd, " \n");
-        while (token != NULL)
-        {
-            arr[i] = token;
-            i++;
-            token = _strtok(NULL, " \n");
-        }
-        arr[i] = NULL;
-    
-        if (i > 0)
-        {
-            if (_strcmp(arr[0], "exit") == 0)
-            {
-                free(cmd);
-                exit(0);
-            }
-            else if (_strcmp(arr[0], "cd") == 0) 
-            {
-                if (arr[1] == NULL) 
-                {
-                    chdir(_getenv("HOME"));
-                    if (oldpwd != NULL) 
-                    {
-                        free(oldpwd);
-                        oldpwd = NULL;
-                    }
-                }
-                else if (_strcmp(arr[1], "-") == 0) 
-                {
-                    if (oldpwd == NULL) 
-                    {
-                        perror(" ");
-                    } 
-                    else 
-                    {
-                        chdir(oldpwd);
-                        oldpwd = getcwd(NULL, 0);
-                    }
-                }
-                else 
-                {
-                    if (oldpwd != NULL) 
-                    {
-                        free(oldpwd);
-                        oldpwd = NULL;
-                    }
-                    oldpwd = getcwd(NULL, 0);
-                    chdir(arr[1]);
-                }
-            }
-            else if (_strcmp(arr[0], "pwd") == 0)
-            {
-                if (getcwd(s, 80 * sizeof(char)) != NULL)
-                {
-                    printf("%s\n", s);
-                }
-                else
-                {
-                    perror(" ");
-                }
-            }
-            else if (_strcmp(arr[0], "setenv") == 0)
-            {
-                if (i < 3) 
-                {
-                    printf(" ");
-                } 
-                else 
-                {
-                    _setenv(arr[1], arr[2], 1);
-                }
-            }
-            else if (_strcmp(arr[0], "unsetenv") == 0)
-            {
-                if (i < 2)
-                {
-                    printf(" "); 
-                }
-                else
-                {
-                    _unsetenv(arr[1]);
-                }
-            }
-            else
-            {
-                pid_t pid;
-                pid = fork();
+	char *input, **cmd;
+	int counter = 0, statue = 1, st = 0;
 
-                if (pid == 0)
-                {
-                    char *_env = _getenv("PATH");
-                    char *path = _strtok(_env, ":");
+	if (argv[1] != NULL)
+		read_file(argv[1], argv);
+	signal(SIGINT, signal_to_handel);
+	while (statue)
+	{
+		counter++;
+		if (isatty(STDIN_FILENO))
+			prompt();
+		input = _getline();
+		if (input[0] == '\0')
+		{
+			continue;
+		}
+		history(input);
+		cmd = parse_cmd(input);
+		if (_strcmp(cmd[0], "exit") == 0)
+		{
+			exit_bul(cmd, input, argv, counter);
+		}
+		else if (check_builtin(cmd) == 0)
+		{
+			st = handle_builtin(cmd, st);
+			free_all(cmd, input);
+			continue;
+		}
+		else
+		{
+			st = check_cmd(cmd, input, counter, argv);
 
-                    while (path != NULL)
-                    {
-                        char buffer[80];
-                        snprintf(buffer, sizeof(buffer), "%s/%s", path, arr[0]);
-                        execve(buffer, arr, environ);
-                        path = _strtok(NULL, ":");
-                    }
-                    perror(" ");
-                    exit(1);
-                }
-                else
-                {
-                    waitpid(pid, NULL, 0);
-                }
-            }
-        }
-   
-        i = 0;
-        free(cmd);
-    }
-  
-    return (0);
+		}
+		free_all(cmd, input);
+	}
+	return (statue);
+}
+/**
+ * check_builtin - check builtin
+ *
+ * @cmd:command to check
+ * Return: 0 Succes -1 Fail
+ */
+int check_builtin(char **cmd)
+{
+	bul_t fun[] = {
+		{"cd", NULL},
+		{"help", NULL},
+		{"echo", NULL},
+		{"history", NULL},
+		{NULL, NULL}
+	};
+	int i = 0;
+		if (*cmd == NULL)
+	{
+		return (-1);
+	}
+
+	while ((fun + i)->command)
+	{
+		if (_strcmp(cmd[0], (fun + i)->command) == 0)
+			return (0);
+		i++;
+	}
+	return (-1);
+}
+/**
+ * creat_envi - Creat Array of Enviroment Variable
+ * @envi: Array of Enviroment Variable
+ * Return: Void
+ */
+void creat_envi(char **envi)
+{
+	int i;
+
+	for (i = 0; environ[i]; i++)
+		envi[i] = _strdup(environ[i]);
+	envi[i] = NULL;
 }
