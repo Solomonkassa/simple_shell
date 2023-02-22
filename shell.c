@@ -1,5 +1,6 @@
 #include "shell.h"
 
+
 /**
  * main - Entry point for the shell
  * @argc: Number of command line arguments
@@ -7,6 +8,8 @@
  *
  * Return: Always returns 0
  */
+
+
 int main(int argc, char *argv[])
 {
     char *cmd = NULL;
@@ -26,9 +29,7 @@ int main(int argc, char *argv[])
             perror("write");
             exit(EXIT_FAILURE);
         }
-        
         cmd = _getline();
-            
         if (feof(stdin))
         {
           break;
@@ -50,44 +51,88 @@ int main(int argc, char *argv[])
                 exit(0);
             }
             else if (_strcmp(arr[0], "cd") == 0)
-            {
-                if (arr[1] == NULL)
-                {
-                    chdir(_getenv("HOME"));
-                    if (oldpwd != NULL)
-                    {
-                        free(oldpwd);
-                        oldpwd = NULL;
-                    }
-                    if (chdir(_getenv("HOME")) == -1)  
-                    {
-                         perror("chdir");
-                         exit(EXIT_FAILURE);
-                    }
-                }
-                else if (_strcmp(arr[1], "-") == 0)
-                {
-                    if (oldpwd == NULL)
-                    {
-                        perror(" ");
-                    }
-                    else
-                    {
-                        chdir(oldpwd);
-                        oldpwd = getcwd(NULL, 0);
-                    }
-                }
-                else
-                {
-                    if (oldpwd != NULL)
-                    {
-                        free(oldpwd);
-                        oldpwd = NULL;
-                    }
-                    oldpwd = getcwd(NULL, 0);
-                    chdir(arr[1]);
-                }
-            }
+       {
+           if (arr[1] == NULL)
+           {
+          const char* home = getenv("HOME");
+          if (home == NULL)
+           {
+            fprintf(stderr, "cd: HOME not set\n");
+            return 1;
+           }
+
+          if (oldpwd != NULL)
+          {
+            free(oldpwd);
+            oldpwd = NULL;
+          }
+
+         oldpwd = getcwd(NULL, 0);
+         if (oldpwd == NULL)
+         {
+            perror("cd");
+            return 1;
+         }
+
+        if (chdir(home) == -1)
+        {
+            perror("cd");
+            free(oldpwd);
+            oldpwd = NULL;
+            return 1;
+        }
+    }
+    else if (_strcmp(arr[1], "-") == 0)
+    {
+        if (oldpwd == NULL)
+        {
+            fprintf(stderr, "cd: OLDPWD not set\n");
+            return 1;
+        }
+
+        char* temp = getcwd(NULL, 0);
+        if (temp == NULL)
+        {
+            perror("cd");
+            return 1;
+        }
+
+        if (chdir(oldpwd) == -1)
+        {
+            perror("cd");
+            free(temp);
+            return 1;
+        }
+
+        free(oldpwd);
+        oldpwd = temp;
+    }
+    else
+    {
+        if (oldpwd != NULL)
+        {
+            free(oldpwd);
+            oldpwd = NULL;
+        }
+
+        oldpwd = getcwd(NULL, 0);
+        if (oldpwd == NULL)
+        {
+            perror("cd");
+            return 1;
+        }
+
+        if (chdir(arr[1]) == -1)
+        {
+            perror("cd");
+            free(oldpwd);
+            oldpwd = NULL;
+            return 1;
+        }
+       }
+ 
+     }
+
             else if (_strcmp(arr[0], "pwd") == 0)
             {
                 if (getcwd(s, 80 * sizeof(char)) != NULL)
