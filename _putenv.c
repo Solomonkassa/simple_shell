@@ -1,24 +1,43 @@
 #include "shell.h"
 
 /**
- * _putenv - adds or modifies an environment variable
- * @s: the string containing the variable name and value
+ * _setenv - Set the value of an environment variable
+ * @varname: The name of the variable to set
+ * @varvalue: The value to set the variable to
+ * @overwrite: Whether to overwrite the variable if it already exists
+ *
  * Return: 0 on success, -1 on failure
  */
-
-int _putenv(char *s)
+int _setenv(const char *varname, const char *varvalue, int overwrite)
 {
-	int i = 0;
-	char **env = environ;
+	char *existing_value;
+	char *p;
+	size_t size;
+	int n;
 
-	while (*env)
+	if (varname == NULL || varname[0] == '\0' || strchr(varname, '=') != NULL)
+		return (-1);
+
+	existing_value = _getenv(varname);
+
+	if (existing_value != NULL && !overwrite)
+		return (-1);
+
+	size = _strlen(varname) + _strlen(varvalue) + 2;
+	p = malloc(sizeof(char) * size);
+
+	if (p == NULL)
+		return (-1);
+
+	snprintf(p, size, "%s=%s", varname, varvalue);
+
+	n = _putenv(p);
+
+	if (n != 0)
 	{
-		i++;
-		env++;
+		free(p);
+		return (-1);
 	}
-
-	environ[i] = s;
-	environ[i + 1] = NULL;
 
 	return (0);
 }
