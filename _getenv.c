@@ -1,9 +1,8 @@
 #include "shell.h"
 
 /**
- * main - Simple Shell (#cisfun$)
- * @argc: Argument Count
- * @argv:Argument Value
+ * main - _getenv
+ * 
  * Return: NULL
  */
 
