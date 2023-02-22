@@ -1,5 +1,12 @@
 #include "shell.h"
 
+/**
+ * main - Simple Shell (#cisfun$)
+ * @argc: Argument Count
+ * @argv:Argument Value
+ * Return: NULL
+ */
+
 char *_getenv(const char *name)
 {
     int i, j;
