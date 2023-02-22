@@ -10,17 +10,18 @@
  */
 
 
-int main(int argc, char *argv[])
+int main()
 {
     char *cmd = NULL;
-    int i = 0, j = 0;
+    int i = 0;
     char *arr[80];
-    char *m[80];
     char s[80];
-    char *n;
     char *token;
-    char *tok;
     char *oldpwd = NULL;
+    char *path;
+    char *env;
+    char buffer[80];
+    char *temp;
 
     while (1)
     {
@@ -90,7 +91,7 @@ int main(int argc, char *argv[])
             return 1;
         }
 
-        char* temp = getcwd(NULL, 0);
+        temp = getcwd(NULL, 0);
         if (temp == NULL)
         {
             perror("cd");
@@ -173,12 +174,12 @@ int main(int argc, char *argv[])
 
                 if (pid == 0)
                 {
-                    char *env = _getenv("PATH");
-                    char *path = _strtok(env, ":");
+                    env = _getenv("PATH");
+                    path = _strtok(env, ":");
 
                     while (path != NULL)
                     {
-                        char buffer[80];
+                       
                         snprintf(buffer, sizeof(buffer), "%s/%s", path, arr[0]);
                         execve(buffer, arr, environ);
                         path = _strtok(NULL, ":");
