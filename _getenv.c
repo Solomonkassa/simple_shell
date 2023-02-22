@@ -10,7 +10,6 @@
 char *_getenv(const char *name)
 {
 	int i, j;
-	char **environ;
 
 	for (i = 0; environ[i] != NULL; i++)
 	{
